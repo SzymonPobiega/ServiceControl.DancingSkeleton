@@ -8,8 +8,8 @@ namespace DancingSkeleton.Infrastructure
     class Environment
     {
         readonly Type[] componentTypes;
-        readonly Dictionary<Type, Func<Host, IEngine>> engines = new Dictionary<Type, Func<Host, IEngine>>();
-        readonly List<Host> hosts = new List<Host>();
+        readonly Dictionary<Type, Func<Particle, IEngine>> engines = new Dictionary<Type, Func<Particle, IEngine>>();
+        readonly List<Particle> particles = new List<Particle>();
         readonly List<object> sharedServices = new List<object>();
 
         public Environment(params Type[] componentTypes)
@@ -27,30 +27,30 @@ namespace DancingSkeleton.Infrastructure
             return sharedServices.Where(s => s is T).Cast<T>().FirstOrDefault();
         }
 
-        public void AddEngine<T>(Func<Host, T> engineConstructor)
+        public void AddEngine<T>(Func<Particle, T> engineConstructor)
             where T : IEngine
         {
             engines[typeof(T)] = host => engineConstructor(host);
         }
 
-        public void AddHost(string name, params Type[] engineTypes)
+        public void AddParticle(string name, params Type[] engineTypes)
         {
-            var host = new Host(name, this, componentTypes);
+            var host = new Particle(name, this, componentTypes);
             foreach (var engineType in engineTypes)
             {
                 host.AddEngine(engines[engineType](host));
             }
-            hosts.Add(host);
+            particles.Add(host);
         }
 
         public string[] GetHostsFor(Type componentType)
         {
-            return hosts.Where(h => h.HostedComponents.Contains(componentType)).Select(h => h.Name).ToArray();
+            return particles.Where(h => h.HostedComponents.Contains(componentType)).Select(h => h.Name).ToArray();
         }
 
         public async Task Start()
         {
-            foreach (var host in hosts)
+            foreach (var host in particles)
             {
                 await host.Start();
             }
@@ -58,7 +58,7 @@ namespace DancingSkeleton.Infrastructure
 
         public async Task Stop()
         {
-            foreach (var host in hosts)
+            foreach (var host in particles)
             {
                 await host.Stop();
             }

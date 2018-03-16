@@ -6,7 +6,7 @@ using DancingSkeleton.Infrastructure.Web.Api;
 
 namespace DancingSkeleton.Infrastructure
 {
-    class Host : IEnvironment
+    class Particle : IEnvironment
     {
         readonly List<IEngine> engines = new List<IEngine>();
         readonly Environment environment;
@@ -14,7 +14,7 @@ namespace DancingSkeleton.Infrastructure
         public string Name { get; }
         public List<Type> HostedComponents { get; } = new List<Type>();
 
-        public Host(string name, Environment environment, params Type[] componentTypes)
+        public Particle(string name, Environment environment, params Type[] componentTypes)
         {
             this.environment = environment;
             this.componentTypes = componentTypes;
