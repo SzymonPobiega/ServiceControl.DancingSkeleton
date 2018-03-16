@@ -34,7 +34,7 @@ namespace DancingSkeleton
             var webInfra = new WebInfrastructure();
             var queueInfra = new QueueInfrastructure();
 
-            var environment = new Cluster(
+            var cluster = new Cluster(
                 typeof(MonitoringComponent), 
                 typeof(DebuggingComponent), 
                 typeof(DebuggingScatterGatherComponent),
@@ -43,27 +43,27 @@ namespace DancingSkeleton
                 typeof(UptimeMonitorComponent));
 
             //Configure the engines
-            environment.AddEngine(host => new WebEngine(webInfra, host.Name, host));
-            environment.AddEngine(host => new MetricsEngine(queueInfra));
-            environment.AddEngine(host => new AuditsEngine(queueInfra));
-            environment.AddEngine(host => new ErrorsEngine(queueInfra, host));
-            environment.AddEngine(host => new HeartbeatsEngine(queueInfra));
+            cluster.RegisterEngine(p => new WebEngine(webInfra, p.Name, p));
+            cluster.RegisterEngine(p => new MetricsEngine(queueInfra));
+            cluster.RegisterEngine(p => new AuditsEngine(queueInfra));
+            cluster.RegisterEngine(p => new ErrorsEngine(queueInfra, p));
+            cluster.RegisterEngine(p => new HeartbeatsEngine(queueInfra));
 
             //Add a failed message DB as a shared service. It mimics a central remote persistent database.
-            environment.AddSharedService(new FailedMessageDatabase());
+            cluster.AddSharedService(new FailedMessageDatabase());
 
             //First particle has metrics and HB engines enabled in addition to the web engine. It allows it to run the Endpoint Lifecycle and Performance Monitoring components
-            environment.AddParticle("1", typeof(WebEngine), typeof(MetricsEngine), typeof(HeartbeatsEngine));
+            cluster.AddParticle("1", typeof(WebEngine), typeof(MetricsEngine), typeof(HeartbeatsEngine));
 
             //Second and third particle have audit engines. They connect to the same queue in competing consumers manner. 
-            environment.AddParticle("2", typeof(WebEngine), typeof(AuditsEngine));
-            environment.AddParticle("3", typeof(WebEngine), typeof(AuditsEngine));
+            cluster.AddParticle("2", typeof(WebEngine), typeof(AuditsEngine));
+            cluster.AddParticle("3", typeof(WebEngine), typeof(AuditsEngine));
 
             //Last particle runs only the errors engine which stores failed messages. Because the Recoverability has a central database the web API for
             //the Recoverability does not have to be hosted in the same particle.
-            environment.AddParticle("4", typeof(ErrorsEngine));
+            cluster.AddParticle("4", typeof(ErrorsEngine));
 
-            await environment.Start();
+            await cluster.Start();
 
             Console.WriteLine("Press a to send a metrics message");
             while (true)

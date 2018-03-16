@@ -27,7 +27,7 @@ namespace DancingSkeleton.Infrastructure
             return sharedServices.Where(s => s is T).Cast<T>().FirstOrDefault();
         }
 
-        public void AddEngine<T>(Func<Particle, T> engineConstructor)
+        public void RegisterEngine<T>(Func<Particle, T> engineConstructor)
             where T : IEngine
         {
             engines[typeof(T)] = host => engineConstructor(host);
