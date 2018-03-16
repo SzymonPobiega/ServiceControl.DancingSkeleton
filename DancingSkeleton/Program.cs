@@ -81,7 +81,7 @@ namespace DancingSkeleton
                     try
                     {
                         var response =
-                            (GetMonitoringDataResponse) await webInfra.Send(new GetMonitoringData(), "1", "monitoring");
+                            (GetMonitoringDataResponse) await webInfra.Send(new GetMonitoringData(), "monitoring");
                         Console.WriteLine("Response: " + string.Join(",", response.Measurements));
                     }
                     catch (TaskCanceledException e)
@@ -105,7 +105,7 @@ namespace DancingSkeleton
                     try
                     {
                         var response =
-                            (GetMessagesResponse)await webInfra.Send(new GetMessages(), "1", "messages");
+                            (GetMessagesResponse)await webInfra.Send(new GetMessages(), "messages");
                         Console.WriteLine("Response: " + string.Join(",", response.Messages.Select(m => m.SendingEndpoint + m.ProcessingEndpoint)));
                     }
                     catch (TaskCanceledException e)
@@ -129,7 +129,7 @@ namespace DancingSkeleton
                     try
                     {
                         var response =
-                            (GetFailedMessagesResponse)await webInfra.Send(new GetFailedMessages(), "1", "errors");
+                            (GetFailedMessagesResponse)await webInfra.Send(new GetFailedMessages(), "errors");
                         Console.WriteLine("Response: " + string.Join(",", response.Messages.Select(m => m.SendingEndpoint + m.ProcessingEndpoint)));
                     }
                     catch (TaskCanceledException e)
@@ -151,7 +151,7 @@ namespace DancingSkeleton
                     try
                     {
                         var response =
-                            (GetLastHeartbeatResponse)await webInfra.Send(new GetLastHeartbeat(), "1", "heartbeats");
+                            (GetLastHeartbeatResponse)await webInfra.Send(new GetLastHeartbeat(), "heartbeats");
                         Console.WriteLine("Response: " + response.LastHeartbeat);
                     }
                     catch (TaskCanceledException e)
