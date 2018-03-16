@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace DancingSkeleton.Infrastructure
 {
-    class Environment
+    class Cluster
     {
         readonly Type[] componentTypes;
         readonly Dictionary<Type, Func<Particle, IEngine>> engines = new Dictionary<Type, Func<Particle, IEngine>>();
         readonly List<Particle> particles = new List<Particle>();
         readonly List<object> sharedServices = new List<object>();
 
-        public Environment(params Type[] componentTypes)
+        public Cluster(params Type[] componentTypes)
         {
             this.componentTypes = componentTypes;
         }

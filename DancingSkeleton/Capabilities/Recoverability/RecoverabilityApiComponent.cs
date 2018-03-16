@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using DancingSkeleton.Infrastructure;
 using DancingSkeleton.Infrastructure.Web.Api;
 
 namespace DancingSkeleton.Capabilities.Recoverability

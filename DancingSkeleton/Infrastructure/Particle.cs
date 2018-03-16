@@ -9,14 +9,14 @@ namespace DancingSkeleton.Infrastructure
     class Particle : IEnvironment
     {
         readonly List<IEngine> engines = new List<IEngine>();
-        readonly Environment environment;
+        readonly Cluster cluster;
         readonly Type[] componentTypes;
         public string Name { get; }
         public List<Type> HostedComponents { get; } = new List<Type>();
 
-        public Particle(string name, Environment environment, params Type[] componentTypes)
+        public Particle(string name, Cluster cluster, params Type[] componentTypes)
         {
-            this.environment = environment;
+            this.cluster = cluster;
             this.componentTypes = componentTypes;
             Name = name;
         }
@@ -72,13 +72,13 @@ namespace DancingSkeleton.Infrastructure
 
         public string[] GetHostsFor(Type componentType)
         {
-            return environment.GetHostsFor(componentType);
+            return cluster.GetHostsFor(componentType);
         }
 
         public string HostName => Name;
         public T GetSharedService<T>()
         {
-            return environment.GetSharedService<T>();
+            return cluster.GetSharedService<T>();
         }
     }
 }

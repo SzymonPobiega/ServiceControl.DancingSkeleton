@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DancingSkeleton.Infrastructure;
 using DancingSkeleton.Infrastructure.Web.Api;
 using DancingSkeleton.Ops.Heartbeats.Api;
 using DancingSkeleton.Ops.Metrics.Api;

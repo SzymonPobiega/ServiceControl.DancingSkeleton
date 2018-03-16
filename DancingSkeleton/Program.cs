@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DancingSkeleton.Capabilities.Debugging;
@@ -17,7 +16,6 @@ using DancingSkeleton.Ops.Heartbeats;
 using DancingSkeleton.Ops.Heartbeats.Api;
 using DancingSkeleton.Ops.Metrics;
 using DancingSkeleton.Ops.Metrics.Api;
-using Environment = DancingSkeleton.Infrastructure.Environment;
 
 namespace DancingSkeleton
 {
@@ -36,7 +34,7 @@ namespace DancingSkeleton
             var webInfra = new WebInfrastructure();
             var queueInfra = new QueueInfrastructure();
 
-            var environment = new Environment(
+            var environment = new Cluster(
                 typeof(MonitoringComponent), 
                 typeof(DebuggingComponent), 
                 typeof(DebuggingScatterGatherComponent),

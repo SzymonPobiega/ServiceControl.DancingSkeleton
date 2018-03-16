@@ -1,6 +1,6 @@
 using System;
 
-namespace DancingSkeleton.Infrastructure.Web.Api
+namespace DancingSkeleton.Infrastructure
 {
     interface IEnvironment
     {
